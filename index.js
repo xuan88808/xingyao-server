@@ -29,8 +29,19 @@ async function main() {
   try {
     const dbModule = await import('./database.js');
     getDb = dbModule.getDb;
-    getDb();
+    const db = getDb();
     console.log('[init] database ready');
+
+    // 自动创建默认管理员（如果没有）
+    const adminCount = db.prepare('SELECT COUNT(*) as c FROM admins').get().c;
+    if (adminCount === 0) {
+      const { hashPassword } = dbModule;
+      db.prepare(`
+        INSERT INTO admins (username, password_hash, nickname, role)
+        VALUES (?, ?, ?, 'superadmin')
+      `).run('admin', hashPassword('admin123'), '管理员');
+      console.log('[init] 默认管理员已创建: admin / admin123');
+    }
   } catch (err) {
     console.error('[FATAL] database init failed:', err.message);
     console.error(err.stack);
