@@ -115,6 +115,23 @@ async function main() {
     }
   });
 
+  // ===== 根路径 — API 状态页 =====
+  app.get('/', (req, res) => {
+    res.send(`<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><title>星曜AI API</title>
+<style>body{font-family:system-ui;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f0a2e;color:#f1f0f7}
+.card{text-align:center;padding:40px;border-radius:20px;background:rgba(22,14,56,0.95);border:1px solid rgba(255,255,255,0.1)}
+h1{background:linear-gradient(135deg,#7c3aed,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.green{color:#22c55e}</style></head>
+<body><div class="card">
+<h1>🌟 星曜AI API</h1>
+<p class="green">● 运行中</p>
+<p style="color:#7b7799;font-size:14px">前端访问：<a href="https://xuan88808.github.io" style="color:#a78bfa">xuan88808.github.io</a></p>
+<p style="color:#7b7799;font-size:12px;margin-top:20px">健康检查：<code style="background:rgba(255,255,255,0.04);padding:4px 8px;border-radius:6px">/api/health</code></p>
+</div></body></html>`);
+  });
+
   // ===== API 路由 =====
   app.use('/api/auth', authRoutes);
   app.use('/api/dashboard', dashboardRoutes);
