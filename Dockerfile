@@ -1,20 +1,19 @@
-FROM node:22-slim
+FROM node:22-bookworm
 
-# better-sqlite3 需要完整的 C++ 编译工具链
+# better-sqlite3 需要 C++ 编译环境（bookworm 已内置 gcc/g++）
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential python3 \
+    python3 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# 先装依赖（利用 Docker 层缓存）
 COPY package*.json ./
-RUN npm install --production && npm cache clean --force
 
-# 复制源码
+# 强制从源码编译 better-sqlite3
+RUN npm install --build-from-source --production && npm cache clean --force
+
 COPY . .
 
-# 确保数据目录存在
 RUN mkdir -p /app/data /app/uploads
 
 EXPOSE 3001
