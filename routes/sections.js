@@ -17,6 +17,7 @@ const PROVIDER_DEFAULTS = {
   openai: { baseUrl: 'https://api.openai.com/v1' },
   qwen: { baseUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1' },
   deepseek: { baseUrl: 'https://api.deepseek.com/v1' },
+  doubao: { baseUrl: 'https://ark.cn-beijing.volces.com/api/v3' },
 };
 
 // GET /api/sections — 获取所有板块配置

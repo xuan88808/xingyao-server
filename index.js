@@ -64,6 +64,7 @@ async function main() {
     { default: publishRoutes },
     { default: analyticsRoutes },
     { default: crawlRoutes },
+    { default: audioRoutes },
   ] = await Promise.all([
     import('./routes/auth.js'),
     import('./routes/dashboard.js'),
@@ -79,6 +80,7 @@ async function main() {
     import('./routes/publish.js'),
     import('./routes/analytics.js'),
     import('./routes/crawl.js'),
+    import('./routes/audio.js'),
   ]);
 
   const app = express();
@@ -108,6 +110,9 @@ async function main() {
 
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+  // 静态文件 — 上传目录（生成的图片等）
+  app.use('/uploads', express.static(join(__dirname, 'uploads')));
 
   // ===== 健康检查 =====
   app.get('/api/health', (req, res) => {
@@ -158,6 +163,7 @@ h1{background:linear-gradient(135deg,#7c3aed,#6366f1);-webkit-background-clip:te
   app.use('/api/publish', publishRoutes);
   app.use('/api/analytics', analyticsRoutes);
   app.use('/api/crawl', crawlRoutes);
+  app.use('/api/audio', audioRoutes);
 
   // ===== 全局错误处理 =====
   app.use((err, req, res, _next) => {
